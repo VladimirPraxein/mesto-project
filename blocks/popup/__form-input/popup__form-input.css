@@ -1,0 +1,21 @@
+.popup__form-input{
+  border: none;
+  margin: 0 0 17px 0;
+  padding: 0 0 13px 0;
+  font-size: 14px;
+  line-height: 17px;
+  border-bottom: 1px solid rgba(0, 0, 0, .2);
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+}
+.popup__form-input:focus{
+  outline-color: #000;
+  outline-style: solid;
+  outline-width: 1px;
+  border-radius: 3px;
+  border-bottom: none;
+}
+.popup__form-input:last-of-type{
+  margin: 0 0 48px 0;
+}

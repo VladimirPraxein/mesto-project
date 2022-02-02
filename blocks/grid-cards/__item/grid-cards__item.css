@@ -1,0 +1,12 @@
+.grid-cards__item{
+  border-radius: 10px;
+  background-color: #fff;
+}
+@media screen and (max-width:580px){
+  .grid-cards__item{
+    margin: 0 0 24px 0;
+  }
+  .grid-cards__item:last-child{
+    margin: 0;
+  }
+}
