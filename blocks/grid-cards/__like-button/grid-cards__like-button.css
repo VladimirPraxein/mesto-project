@@ -6,13 +6,10 @@
   height: 19px;
   border: none;
   padding: 0;
-  background-color: #fff;
+  background-color: transparent;
   cursor: pointer;
   transition: .4s;
 }
 .grid-cards__like-button:hover{
   opacity: .5;
-}
-.grid-cards__like-button:active{
-  background-image: url(../../../images/like-active.svg);
 }
