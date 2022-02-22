@@ -24,16 +24,7 @@
     </section>
     <section class="grid-cards">
       <ul class="grid-cards__list">
-        <template class="grid-cards__template">
-          <li class="grid-cards__item">
-            <button type="button" class="grid-cards__delete-button animation-button"></button>
-            <img class="grid-cards__image">
-            <div class="grid-cards__row">
-              <h2 class="grid-cards__title"></h2>
-              <button type="button" class="grid-cards__like-button"></button>
-            </div>
-          </li>
-        </template>
+
       </ul>
     </section>
   </main>
@@ -44,10 +35,10 @@
     <div class="popup__container">
       <button class="popup__button-close animation-button" type="button"></button>
       <h2 class="popup__title">Редактировать профиль</h2>
-      <form action="#" class="popup__form" name="form-popup">
+      <form action="#" class="popup__form" name="popup-profile">
         <fieldset class="popup__form-info">
-          <input type="text" class="popup__form-input" name="name" placeholder="Имя пользователя" required>
-          <input type="text" class="popup__form-input" name="work" placeholder="О себе" required>
+          <input type="text" class="popup__form-input popup__form-name" name="name" placeholder="Имя пользователя" required>
+          <input type="text" class="popup__form-input popup__form-work" name="work" placeholder="О себе" required>
           <button class="popup__button-save" type="submit">Сохранить</button>
         </fieldset>
       </form>
@@ -57,10 +48,10 @@
     <div class="popup__container">
       <button class="popup__button-close animation-button" type="button"></button>
       <h2 class="popup__title">Новое место</h2>
-      <form action="#" class="popup__form" name="form-popup">
+      <form action="#" class="popup__form" name="popup-place">
         <fieldset class="popup__form-info">
-          <input type="text" class="popup__form-input" name="place" placeholder="Название" required>
-          <input type="text" class="popup__form-input" name="url" placeholder="Ссылка на картинку" required>
+          <input type="text" class="popup__form-input popup__form-title" name="place" placeholder="Название" required>
+          <input type="text" class="popup__form-input popup__form-link" name="url" placeholder="Ссылка на картинку" required>
           <button class="popup__button-save" type="submit">Создать</button>
         </fieldset>
       </form>
@@ -73,6 +64,16 @@
       <p class="popup_type_image__text"></p>
     </div>
   </div>
-  <script src="index.js"></script>
+  <template class="grid-cards__template">
+    <li class="grid-cards__item">
+      <button type="button" class="grid-cards__delete-button animation-button"></button>
+      <img class="grid-cards__image">
+      <div class="grid-cards__row">
+        <h2 class="grid-cards__title"></h2>
+        <button type="button" class="grid-cards__like-button"></button>
+      </div>
+    </li>
+  </template>
+  <script src="./pages/index.js"></script>
 </body>
 </html>
