@@ -4,15 +4,14 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Mesto</title>
-  <link rel="stylesheet" href="./pages/index.css">
 </head>
 <body class="page">
   <header class="header">
-    <a href="#" class="header__link"><img  class="header__logo" src="./images/header-logo.svg" alt="Логотип Mesto Russia"></a>
+    <a href="#" class="header__link"><img  class="header__logo" src="<%=require('./images/header-logo.svg')%>" alt="Логотип Mesto Russia"></a>
   </header>
   <main class="main">
     <section class="profile">
-      <img src="./images/avatar.jpg" alt="Фото Жака-Ива Кусто" class="profile__avatar">
+      <img src="<%=require('./images/avatar.jpg')%>" alt="Фото Жака-Ива Кусто" class="profile__avatar">
       <div class="profile__info">
         <div class="profile__info-row">
           <h1 class="profile__name">Жак-Ив Кусто</h1>
@@ -74,6 +73,5 @@
       </div>
     </li>
   </template>
-  <script src="./pages/index.js"></script>
 </body>
 </html>
