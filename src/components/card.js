@@ -1,18 +1,33 @@
 const templateCard = document.querySelector('.grid-cards__template').content;
-const popupProfile = document.querySelector('.popup_type_profile')
-const popupProfileName = document.querySelector('.popup__form-name');
-const popupProfileWork = document.querySelector('.popup__form-work');
+import {openPopup} from './modal.js';
 export const listCards = document.querySelector('.grid-cards__list');
 export const popupImage = document.querySelector('.popup_type_image');
-//Сохранение попапа профиля
-function submitProfile (evt) {
-  evt.preventDefault();
-  userName.textContent = popupProfileName.value;
-  userWork.textContent = popupProfileWork.value;
-  closePopup(popupProfile);
-}
-popupProfile.querySelector('.popup__form').addEventListener('submit', submitProfile);
-
+export const initialCards = [
+  {
+    name: 'Архыз',
+    link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/arkhyz.jpg'
+  },
+  {
+    name: 'Челябинская область',
+    link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/chelyabinsk-oblast.jpg'
+  },
+  {
+    name: 'Иваново',
+    link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/ivanovo.jpg'
+  },
+  {
+    name: 'Камчатка',
+    link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/kamchatka.jpg'
+  },
+  {
+    name: 'Холмогорский район',
+    link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/kholmogorsky-rayon.jpg'
+  },
+  {
+    name: 'Байкал',
+    link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/baikal.jpg'
+  }
+]; 
 //Функция создания карточки
 export function createCard(text,link){
   const contentCard = templateCard.querySelector('.grid-cards__item').cloneNode(true);
@@ -40,24 +55,4 @@ export function createCard(text,link){
 
 
 
-const popupPlace = document.querySelector('.popup_type_place');
-const popupPlaceTitle = document.querySelector('.popup__form-title');
-const popupPlaceLink = document.querySelector('.popup__form-link');
-const addButton = document.querySelector('.profile__add-button');
-//Функция вставки карточки из формы
-function insertCard(){
-  listCards.prepend(createCard(popupPlaceTitle.value,popupPlaceLink.value));
-}
-//Функция очистки попапа места
-function resetPopupPlace(){
-  popupPlaceTitle.value = '';
-  popupPlaceLink.value = '';
-}
-//Сохранение попапа места
-function submitPlace (evt) {
-  evt.preventDefault();
-  insertCard();
-  closePopup(popupPlace);
-  resetPopupPlace();
-}
-popupPlace.querySelector('.popup__form').addEventListener('submit',submitPlace);
+
