@@ -37,12 +37,12 @@
       <form action="#" class="popup__form" name="popup-profile" novalidate>
         <fieldset class="popup__form-info">
           <div class="popup__form-container">
-            <input type="text" class="popup__form-input popup__form-name" name="name" placeholder="Имя пользователя" required minlength="2">
-            <span class="popup__form-error name-error">Вы пропустили это поле.</span>
+            <input type="text" class="popup__form-input popup__form-name" name="name" placeholder="Имя пользователя" required minlength="2" maxlength="40">
+            <span class="popup__form-error name-error"></span>
           </div>
           <div class="popup__form-container">
-            <input type="text" class="popup__form-input popup__form-work" name="work" placeholder="О себе" required minlength="2">
-            <span class="popup__form-error work-error">Вы пропустили это поле.</span>
+            <input type="text" class="popup__form-input popup__form-work" name="work" placeholder="О себе" required minlength="2" maxlength="200">
+            <span class="popup__form-error work-error"></span>
           </div>
           <button class="popup__button-save" type="submit">Сохранить</button>
         </fieldset>
@@ -56,20 +56,20 @@
       <form action="#" class="popup__form" name="popup-place" novalidate>
         <fieldset class="popup__form-info">
           <div class="popup__form-container">
-            <input type="text" class="popup__form-input popup__form-title" name="place" placeholder="Название" required minlength="2">
+            <input type="text" class="popup__form-input popup__form-title" name="place" placeholder="Название" required minlength="2" maxlength="30">
             <span class="popup__form-error place-error"></span>
           </div>
           <div class="popup__form-container">
             <input type="url" class="popup__form-input popup__form-link" name="url" placeholder="Ссылка на картинку" required>
             <span class="popup__form-error url-error"></span>
           </div>
-          <button class="popup__button-save" type="submit">Создать</button>
+          <button class="popup__button-save" type="submit" disabled>Создать</button>
         </fieldset>
       </form>
     </div>
   </div>
   <div class="popup popup_type_image">
-    <div class="popup_type_image__container">
+    <div class="popup__container popup_type_image__container">
       <button class="popup__button-close animation-button" type="button"></button>
       <img class="popup_type_image__image">
       <p class="popup_type_image__text"></p>
