@@ -1,7 +1,9 @@
 const templateCard = document.querySelector('.grid-cards__template').content;
-import { openPopup, hoverOverlay } from './modal.js';
+import { openPopup } from './modal.js';
 export const listCards = document.querySelector('.grid-cards__list');
 export const popupImage = document.querySelector('.popup_type_image');
+const popupImagePicture = popupImage.querySelector('.popup_type_image__image');
+const popupImageText = popupImage.querySelector('.popup_type_image__text');
 export const initialCards = [
   {
     name: 'Архыз',
@@ -37,11 +39,10 @@ export function createCard(text, link) {
   imageCard.alt = text;
   //Открытие попапа карточки
   imageCard.addEventListener('click', function () {
-    popupImage.querySelector('.popup_type_image__image').src = link;
-    popupImage.querySelector('.popup_type_image__image').alt = text;
-    popupImage.querySelector('.popup_type_image__text').textContent = text;
+    popupImagePicture.src = link;
+    popupImagePicture.alt = text;
+    popupImageText.textContent = text;
     openPopup(popupImage);
-    hoverOverlay(popupImage);
   });
   //Лайк карточки
   contentCard.querySelector('.grid-cards__like-button').addEventListener('click', function (evt) {
