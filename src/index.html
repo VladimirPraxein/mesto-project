@@ -11,7 +11,10 @@
   </header>
   <main class="main">
     <section class="profile">
-      <img src="<%=require('./images/avatar.jpg')%>" alt="Фото Жака-Ива Кусто" class="profile__avatar">
+      <div class="profile__avatar-container">
+        <img src="<%=require('./images/avatar.jpg')%>" alt="Фото Жака-Ива Кусто" class="profile__avatar">
+        <span class="profile__avatar-edit"></span>
+      </div>
       <div class="profile__info">
         <div class="profile__info-row">
           <h1 class="profile__name">Жак-Ив Кусто</h1>
@@ -63,7 +66,7 @@
             <input type="url" class="popup__form-input popup__form-link" name="url" placeholder="Ссылка на картинку" required>
             <span class="popup__form-error url-error"></span>
           </div>
-          <button class="popup__button-save" type="submit" disabled>Создать</button>
+          <button class="popup__button-save button-create" type="submit" disabled>Создать</button>
         </fieldset>
       </form>
     </div>
@@ -75,13 +78,32 @@
       <p class="popup_type_image__text"></p>
     </div>
   </div>
+  <div class="popup popup_type_avatar">
+    <div class="popup__container">
+      <button class="popup__button-close animation-button" type="button"></button>
+      <h2 class="popup__title">Обновить аватар</h2>
+      <form action="#" class="popup__form" name="popup-avatar" novalidate>
+        <fieldset class="popup__form-info">
+          <div class="popup__form-container">
+            <input type="url" class="popup__form-input" name="url" placeholder="Ссылка на картинку" required>
+            <span class="popup__form-error url-error"></span>
+          </div>
+          <button class="popup__button-save" type="submit" disabled>Сохранить</button>
+        </fieldset>
+      </form>
+    </div>
+  </div>
+
   <template class="grid-cards__template">
     <li class="grid-cards__item">
       <button type="button" class="grid-cards__delete-button animation-button"></button>
       <img class="grid-cards__image">
       <div class="grid-cards__row">
         <h2 class="grid-cards__title"></h2>
-        <button type="button" class="grid-cards__like-button"></button>
+        <div class="grid-cards__likes">
+          <button type="button" class="grid-cards__like-button"></button>
+          <span class="grid-cards__like-number"></span>
+        </div>
       </div>
     </li>
   </template>

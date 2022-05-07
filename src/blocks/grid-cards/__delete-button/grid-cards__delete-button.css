@@ -1,4 +1,5 @@
 .grid-cards__delete-button{
+  display: none;
   background-image: url('../../../images/button-delete.svg');
   background-repeat: no-repeat;
   background-position: center;
