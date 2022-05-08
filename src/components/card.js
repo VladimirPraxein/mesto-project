@@ -54,7 +54,7 @@ export function createCard(dataCard, userId) {
   //Удаление карточки
   buttonDelete.addEventListener('click', function (evt) {
     deleteCard(dataCard._id)
-      .then(evt.target.closest('.grid-cards__item').remove())
+      .then(() => {evt.target.closest('.grid-cards__item').remove()})
       .catch(showError)
   });
   return contentCard;

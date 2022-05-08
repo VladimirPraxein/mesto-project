@@ -66,7 +66,7 @@ function submitProfile(evt) {
       closePopup(popupProfile)
     })
     .catch(showError)
-    .finally( renderLoading(false, buttonPopupProfile))
+    .finally(() => {renderLoading(false, buttonPopupProfile)})
 }
 popupProfile.querySelector('.popup__form').addEventListener('submit', submitProfile);
 
@@ -93,7 +93,7 @@ function submitPlace(evt) {
       closePopup(popupPlace);
     })
     .catch(showError)
-    .finally(renderLoading(false, buttonPopupPlace))
+    .finally(() => {renderLoading(false, buttonPopupPlace)})
 }
 popupPlaceForm.addEventListener('submit', submitPlace);
 
@@ -118,7 +118,7 @@ function submitAvatar(evt) {
       closePopup(popupAvatar);
     })
     .catch(showError)
-    .finally(renderLoading(false, buttonPopupAvatar))
+    .finally(() => {renderLoading(false, buttonPopupAvatar)})
 }
 popupAvatarForm.addEventListener('submit', submitAvatar);
 
