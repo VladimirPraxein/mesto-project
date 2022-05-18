@@ -2,7 +2,7 @@ import './../styles/index.css';
 import { openPopup, closePopup } from './modal.js';
 import { createCard  } from './card.js';
 import { enableValidation, hideErrors, setButtonState, settings } from './validate.js';
-import { getUserInfo, getCards, saveUserInfo, addCard, updateAvatar } from './api.js';
+import { api } from './api.js';
 const popupProfile = document.querySelector('.popup_type_profile');
 const profileName = document.querySelector('.profile__name');
 const profileWork = document.querySelector('.profile__work');
@@ -37,7 +37,7 @@ function renderLoading(isLoading, button) {
       button.disabled = false;
   }
 }
-Promise.all([getUserInfo(), getCards()])
+Promise.all([api.getUserInfo(), api.getCards()])
   .then(([userData, cards]) => {
     userId = userData._id
     processUserInfo(userData);
@@ -60,7 +60,7 @@ document.querySelector('.profile__edit-button').addEventListener('click', functi
 function submitProfile(evt) {
   evt.preventDefault();
   renderLoading(true, buttonPopupProfile);
-  saveUserInfo(popupProfileName.value, popupProfileWork.value)
+  api.saveUserInfo(popupProfileName.value, popupProfileWork.value)
     .then(res => {
       processUserInfo(res);
       closePopup(popupProfile)
@@ -87,7 +87,7 @@ addButton.addEventListener('click', function () {
 function submitPlace(evt) {
   evt.preventDefault();
   renderLoading(true, buttonPopupPlace);
-  addCard(popupPlaceTitle.value, popupPlaceLink.value)
+  api.addCard(popupPlaceTitle.value, popupPlaceLink.value)
     .then(card => {
       listCards.prepend(createCard(card, userId));
       closePopup(popupPlace);
@@ -112,7 +112,7 @@ document.querySelector('.profile__avatar-edit').addEventListener('click', functi
 function submitAvatar(evt) {
   evt.preventDefault();
   renderLoading(true, buttonPopupAvatar);
-  updateAvatar(popupAvatarInput.value)
+  api.updateAvatar(popupAvatarInput.value)
     .then(res => {
       processUserInfo(res);
       closePopup(popupAvatar);

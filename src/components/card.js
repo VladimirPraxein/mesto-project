@@ -1,6 +1,6 @@
 const templateCard = document.querySelector('.grid-cards__template').content;
 import { openPopup } from './modal.js';
-import { deleteCard, addLike, deleteLike } from './api.js';
+import { api } from './api.js';
 import { showError } from './index.js';
 export const popupImage = document.querySelector('.popup_type_image');
 const popupImagePicture = popupImage.querySelector('.popup_type_image__image');
@@ -36,14 +36,14 @@ export function createCard(dataCard, userId) {
   //Лайк карточки
   buttonLike.addEventListener('click', function (evt) {
     if(!evt.target.classList.contains('grid-cards__like-button_active')) {
-      addLike(dataCard._id, dataCard.likes, numberLikes)
+      api.addLike(dataCard._id, dataCard.likes, numberLikes)
         .then(res => {
           evt.target.classList.add('grid-cards__like-button_active');
           countLikes(numberLikes, res.likes)
         })
         .catch(showError)
     } else {
-      deleteLike(dataCard._id, numberLikes)
+      api.deleteLike(dataCard._id, numberLikes)
         .then(res => {
           evt.target.classList.remove('grid-cards__like-button_active');
           countLikes(numberLikes, res.likes)
@@ -53,7 +53,7 @@ export function createCard(dataCard, userId) {
   });
   //Удаление карточки
   buttonDelete.addEventListener('click', function (evt) {
-    deleteCard(dataCard._id)
+    api.deleteCard(dataCard._id)
       .then(() => {evt.target.closest('.grid-cards__item').remove()})
       .catch(showError)
   });
