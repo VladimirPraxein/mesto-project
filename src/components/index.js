@@ -1,7 +1,7 @@
 import './../styles/index.css';
 import { openPopup, closePopup } from './modal.js';
 import { createCard  } from './card.js';
-import { enableValidation, hideErrors, setButtonState, settings } from './validate.js';
+import FormValidator, { settings } from './validate.js';
 import { api } from './api.js';
 const popupProfile = document.querySelector('.popup_type_profile');
 const profileName = document.querySelector('.profile__name');
@@ -23,6 +23,11 @@ function processUserInfo(info) {
 export function showError(err) {
   console.log(err);
 }
+
+//Валидация
+const validator = new FormValidator(settings)
+validator.enableValidation()
+
 //Уведомить пользователя о процессе загрузки
 function renderLoading(isLoading, button) {
   if(isLoading) {
@@ -53,8 +58,8 @@ document.querySelector('.profile__edit-button').addEventListener('click', functi
   openPopup(popupProfile);
   popupProfileName.value = profileName.textContent;
   popupProfileWork.value = profileWork.textContent;
-  hideErrors(popupProfile, settings);
-  setButtonState(popupProfile, settings);
+  validator.hideErrors(popupProfile);
+  validator.setButtonState(popupProfile);
 });
 //Сохранение попапа профиля
 function submitProfile(evt) {
@@ -80,8 +85,8 @@ const buttonPopupPlace = popupPlace.querySelector('.popup__button-save');
 addButton.addEventListener('click', function () {
   openPopup(popupPlace);
   popupPlaceForm.reset();
-  hideErrors(popupPlace, settings);
-  setButtonState(popupPlace, settings);
+  validator.hideErrors(popupPlace);
+  validator.setButtonState(popupPlace);
 });
 //Сохранение попапа места
 function submitPlace(evt) {
@@ -105,8 +110,8 @@ const buttonPopupAvatar = popupAvatar.querySelector('.popup__button-save');
 document.querySelector('.profile__avatar-edit').addEventListener('click', function() {
   openPopup(popupAvatar);
   popupAvatarForm.reset();
-  hideErrors(popupAvatar, settings);
-  setButtonState(popupAvatar, settings);
+  validator.hideErrors(popupAvatar);
+  validator.setButtonState(popupAvatar);
 });
 //Сохранение попапа аватара
 function submitAvatar(evt) {
@@ -122,7 +127,6 @@ function submitAvatar(evt) {
 }
 popupAvatarForm.addEventListener('submit', submitAvatar);
 
-//Валидация
-enableValidation(settings);
+
 
 
