@@ -12,6 +12,7 @@ const popupProfileName = document.querySelector('.popup__form-name');
 const popupProfileWork = document.querySelector('.popup__form-work');
 const buttonPopupProfile = popupProfile.querySelector('.popup__button-save');
 const listCards = document.querySelector('.grid-cards__list');
+const validator = new FormValidator(settings)
 
 //ID пользователя
 let userId
@@ -89,6 +90,7 @@ const popupPlaceTitle = popupPlace.querySelector('.popup__form-title');
 const popupPlaceLink = popupPlace.querySelector('.popup__form-link');
 const addButton = document.querySelector('.profile__add-button');
 const buttonPopupPlace = popupPlace.querySelector('.popup__button-save');
+
 //Открытие попапа места
 addButton.addEventListener('click', function () {
   openPopup(popupPlace);
@@ -96,6 +98,7 @@ addButton.addEventListener('click', function () {
   validator.hideErrors(popupPlace);
   validator.setButtonState(popupPlace);
 });
+
 //Сохранение попапа места
 function submitPlace(evt) {
   evt.preventDefault();
@@ -108,6 +111,7 @@ function submitPlace(evt) {
     .catch(showError)
     .finally(() => {renderLoading(false, buttonPopupPlace)})
 }
+
 popupPlaceForm.addEventListener('submit', submitPlace);
 
 const popupAvatar = document.querySelector('.popup_type_avatar');
