@@ -3,6 +3,7 @@ import { openPopup, closePopup } from './modal.js';
 import { createCard  } from './card.js';
 import FormValidator, { settings } from './validate.js';
 import { api } from './api.js';
+
 const popupProfile = document.querySelector('.popup_type_profile');
 const profileName = document.querySelector('.profile__name');
 const profileWork = document.querySelector('.profile__work');
@@ -11,22 +12,29 @@ const popupProfileName = document.querySelector('.popup__form-name');
 const popupProfileWork = document.querySelector('.popup__form-work');
 const buttonPopupProfile = popupProfile.querySelector('.popup__button-save');
 const listCards = document.querySelector('.grid-cards__list');
+
 //ID пользователя
 let userId
+
 //Обработка информации о пользователе
 function processUserInfo(info) {
   profileName.textContent = info.name;
   profileWork.textContent = info.about;
   profileAvatar.src = info.avatar;
 }
+
 //Показать ошибку
 export function showError(err) {
   console.log(err);
 }
 
+const formList = document.querySelectorAll('.popup__form')
+
 //Валидация
-const validator = new FormValidator(settings)
-validator.enableValidation()
+formList.forEach(form => {
+  const validator = new FormValidator(settings, form)
+  validator.enableValidation()
+})
 
 //Уведомить пользователя о процессе загрузки
 function renderLoading(isLoading, button) {

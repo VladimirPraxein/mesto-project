@@ -9,8 +9,9 @@ export const settings = {
 };
 
 export default class {
-  constructor(settings) {
+  constructor(settings, formElement) {
     this._settings = settings
+    this._formElement = formElement
   }
 
   //Добавление слушателей полям формы
@@ -60,17 +61,14 @@ export default class {
     });
   }
 
-  enableValidation(settings) {
-    const formList = Array.from(document.querySelectorAll(this._settings.formClass));
-    formList.forEach((formElement) => {
-      formElement.addEventListener('submit', (evt) => {
-        evt.preventDefault();
-      });
+  enableValidation() {
+    this._formElement.addEventListener('submit', (evt) => {
+      evt.preventDefault();
+    });
 
-      const fieldsetList = Array.from(formElement.querySelectorAll(this._settings.fieldsetClass));
-      fieldsetList.forEach((fieldSet) => {
-        this._setEventListeners(fieldSet, settings);
-      });
+    const fieldsetList = Array.from(this._formElement.querySelectorAll(this._settings.fieldsetClass));
+    fieldsetList.forEach((fieldSet) => {
+      this._setEventListeners(fieldSet, settings);
     });
   };
 
