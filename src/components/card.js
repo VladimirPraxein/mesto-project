@@ -1,7 +1,6 @@
 const templateCard = document.querySelector('.grid-cards__template').content;
-import { openPopup } from './modal.js';
 import { api } from './api.js';
-import { showError } from './index.js';
+import { showError, imgPopup } from './index.js';
 export const popupImage = document.querySelector('.popup_type_image');
 const popupImagePicture = popupImage.querySelector('.popup_type_image__image');
 const popupImageText = popupImage.querySelector('.popup_type_image__text');
@@ -24,7 +23,7 @@ export function createCard(dataCard, userId) {
     popupImagePicture.src = dataCard.link;
     popupImagePicture.alt = dataCard.name;
     popupImageText.textContent = dataCard.name;
-    openPopup(popupImage);
+    imgPopup.openPopup(dataCard);
   });
   countLikes(numberLikes, dataCard.likes);
   if(dataCard.likes.find(user => { return user._id === userId })) {
