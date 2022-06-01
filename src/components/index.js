@@ -1,11 +1,14 @@
 import './../styles/index.css';
-import { createCard  } from './card.js';
+import { Card  } from './card.js';
 import FormValidator, { settings } from './validate.js';
 import { api } from './api.js';
 import PopupWithImage from '../components/PopupWithImage.js';
 import PopupWithForm from '../components/PopupWithForm.js';
+import { UserInfo } from './UserInfo';
+import { Section } from './Section';
 
 const popupProfile = document.querySelector('.popup_type_profile');
+const profile = document.querySelector('.profile');
 const profileName = document.querySelector('.profile__name');
 const profileWork = document.querySelector('.profile__work');
 const profileAvatar = document.querySelector('.profile__avatar');
@@ -14,16 +17,6 @@ const popupProfileWork = document.querySelector('.popup__form-work');
 const buttonPopupProfile = popupProfile.querySelector('.popup__button-save');
 const listCards = document.querySelector('.grid-cards__list');
 const validator = new FormValidator(settings)
-
-//ID пользователя
-let userId
-
-//Обработка информации о пользователе
-function processUserInfo(info) {
-  profileName.textContent = info.name;
-  profileWork.textContent = info.about;
-  profileAvatar.src = info.avatar;
-}
 
 //Показать ошибку
 export function showError(err) {
@@ -52,17 +45,36 @@ function renderLoading(isLoading, button) {
       button.disabled = false;
   }
 }
-Promise.all([api.getUserInfo(), api.getCards()])
-  .then(([userData, cards]) => {
-    userId = userData._id
-    processUserInfo(userData);
-    cards.forEach(card => {
-      listCards.append(createCard(card, userId));
-    });
-  })
-  .catch(err => {
-    showError(err);
+
+export const popupImagePicture = document.querySelector('.popup_type_image__image');
+export const popupImageText = document.querySelector('.popup_type_image__text');
+//попап с картинкой
+export const popupImage = new PopupWithImage('.popup_type_image');
+popupImage.setEventListeners();
+
+//Загрузка информации о пользователе
+const userInfo = new UserInfo(profile);
+userInfo.getUserInfo();
+
+//Загрузка карточек
+api.getCards()
+  .then((cards) => {
+    const section = new Section({
+      items:cards,
+      renderer:(itemCard) => {
+        const card = new Card(itemCard,
+          {selector:'.grid-cards__template', handleCardClick:(imageCard) => {
+          imageCard.addEventListener('click', () => {
+            popupImage.openPopup(imageCard)
+          })
+        }})
+        const cardElement = card.generate();
+        section.addItem(cardElement);
+      }
+    }, '.grid-cards__list')
+    section.renderItems();
   });
+
 //Открытие попапа профиля
 const popupPlace = document.querySelector('.popup_type_place');
 const popupPlaceForm = popupPlace.querySelector('.popup__form');
@@ -72,10 +84,6 @@ const buttonPopupPlace = popupPlace.querySelector('.popup__button-save');
 const popupAvatar = document.querySelector('.popup_type_avatar');
 const popupAvatarForm = popupAvatar.querySelector('.popup__form');
 const buttonPopupAvatar = popupAvatar.querySelector('.popup__button-save');
-
-//попап с картинкой
-export const imgPopup = new PopupWithImage('.popup_type_image');
-imgPopup.setEventListeners();
 
 //попап аватара
 const avatarPopup = new PopupWithForm('.popup_type_avatar',
@@ -104,9 +112,21 @@ const placePopup = new PopupWithForm('.popup_type_place',
 function submitPlace(input) {
   renderLoading(true, buttonPopupPlace);
   api.addCard(input.place, input.url)
-    .then(card => {
-      listCards.prepend(createCard(card, userId));
-      placePopup.closePopup();
+    .then(cards => {
+      const section = new Section({
+        items:cards,
+        renderer:(itemCard) => {
+          const card = new Card(itemCard,
+            {selector:'.grid-cards__template', handleCardClick:(imageCard) => {
+            imageCard.addEventListener('click', () => {
+              popupImage.openPopup(imageCard)
+            })
+          }})
+          const cardElement = card.generate();
+          section.addItem(cardElement);
+        }
+      }, '.grid-cards__list')
+      section.renderItems();
     })
     .catch(showError)
     .finally(() => {renderLoading(false, buttonPopupPlace)})
@@ -127,7 +147,7 @@ const profilePopup = new PopupWithForm('.popup_type_profile',
     renderLoading(true, buttonPopupProfile);
     api.saveUserInfo(input.name, input.work)
       .then(res => {
-        processUserInfo(res);
+        userInfo.setUserInfo(res);
         profilePopup.closePopup();
       })
       .catch(showError)

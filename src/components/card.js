@@ -1,64 +1,73 @@
-const templateCard = document.querySelector('.grid-cards__template').content;
 import { api } from './api.js';
-import { showError, imgPopup } from './index.js';
-export const popupImage = document.querySelector('.popup_type_image');
-const popupImagePicture = popupImage.querySelector('.popup_type_image__image');
-const popupImageText = popupImage.querySelector('.popup_type_image__text');
-//Количество лайков
-function countLikes(numberLikes, likes) {
-  numberLikes.textContent = likes.length;
-}
-//Функция создания карточки
-export function createCard(dataCard, userId) {
-  const contentCard = templateCard.querySelector('.grid-cards__item').cloneNode(true);
-  const imageCard = contentCard.querySelector('.grid-cards__image');
-  const buttonDelete = contentCard.querySelector('.grid-cards__delete-button');
-  const buttonLike = contentCard.querySelector('.grid-cards__like-button');
-  const numberLikes = contentCard.querySelector('.grid-cards__like-number');
-  contentCard.querySelector('.grid-cards__title').textContent = dataCard.name;
-  imageCard.src = dataCard.link;
-  imageCard.alt = dataCard.name;
-  //Открытие попапа картинки
-  imageCard.addEventListener('click', function () {
-    popupImagePicture.src = dataCard.link;
-    popupImagePicture.alt = dataCard.name;
-    popupImageText.textContent = dataCard.name;
-    imgPopup.openPopup(dataCard);
-  });
-  countLikes(numberLikes, dataCard.likes);
-  if(dataCard.likes.find(user => { return user._id === userId })) {
-    buttonLike.classList.add('grid-cards__like-button_active');
+import {userId} from './UserInfo.js';
+export class Card {
+  constructor({ link, name, likes, owner, _id }, {selector, handleCardClick}) {
+    this._link = link;
+    this._name = name;
+    this._likes = likes;
+    this._owner = owner._id;
+    this._cardId = _id;
+    this._selector = selector;
+    this._handleCardClick = handleCardClick;
   }
-  if(dataCard.owner._id === userId) {
-    buttonDelete.classList.add('grid-cards__delete-button_active');
+  _getElement() {
+    const contentCard = document.querySelector(this._selector).content.querySelector('.grid-cards__item').cloneNode(true);
+    return contentCard;
   }
-  //Лайк карточки
-  buttonLike.addEventListener('click', function (evt) {
-    if(!evt.target.classList.contains('grid-cards__like-button_active')) {
-      api.addLike(dataCard._id, dataCard.likes, numberLikes)
-        .then(res => {
-          evt.target.classList.add('grid-cards__like-button_active');
-          countLikes(numberLikes, res.likes)
-        })
-        .catch(showError)
-    } else {
-      api.deleteLike(dataCard._id, numberLikes)
-        .then(res => {
-          evt.target.classList.remove('grid-cards__like-button_active');
-          countLikes(numberLikes, res.likes)
-        })
-        .catch(showError)
+  _deleteCard() {
+    this.buttonDelete.addEventListener('click', function (evt) {
+      api.deleteCard(this._cardId)
+        .then((res) => {evt.target.closest('.grid-cards__item').remove()})
+        .catch(api.showError)
+    });
+  }
+  _countLikes(numberLikes, likes) {
+    numberLikes.textContent = likes.length;
+  }
+  _likeCard() {
+    this.buttonLike.addEventListener('click', function (evt) {
+      if(!evt.target.classList.contains('grid-cards__like-button_active')) {
+        api.addLike(this._cardId, this._likes, this.numberLikes)
+          .then(res => {
+            evt.target.classList.add('grid-cards__like-button_active');
+            this._countLikes(numberLikes, res.likes)
+          })
+          .catch(api.showError)
+      } else {
+        api.deleteLike(this._cardId, this.numberLikes)
+          .then(res => {
+            evt.target.classList.remove('grid-cards__like-button_active');
+            this._countLikes(numberLikes, res.likes)
+          })
+          .catch(api.showError)
+      }
+    });
+  }
+  _setEventListeners() {
+    this._likeCard();
+    this._deleteCard();
+  }
+  generate() {
+    this.contentCard = this._getElement();
+    this.imageCard = this.contentCard.querySelector('.grid-cards__image');
+    this.titleCard = this.contentCard.querySelector('.grid-cards__title');
+    this.buttonDelete = this.contentCard.querySelector('.grid-cards__delete-button');
+    this.buttonLike = this.contentCard.querySelector('.grid-cards__like-button');
+    this.numberLikes = this.contentCard.querySelector('.grid-cards__like-number');
+    this.titleCard.textContent = this._name;
+    this.imageCard.src = this._link;
+    this.imageCard.alt = this._name;
+    this._countLikes(this.numberLikes, this._likes);
+    if(this._likes.find(user => { return user._id === userId })) {
+      this.buttonLike.classList.add('grid-cards__like-button_active');
     }
-  });
-  //Удаление карточки
-  buttonDelete.addEventListener('click', function (evt) {
-    api.deleteCard(dataCard._id)
-      .then(() => {evt.target.closest('.grid-cards__item').remove()})
-      .catch(showError)
-  });
-  return contentCard;
+    if(this._owner === userId) {
+      this.buttonDelete.classList.add('grid-cards__delete-button_active');
+    }
+    this._setEventListeners();
+    this._handleCardClick(this.imageCard);
+    return this.contentCard;
+  }
 }
-
-
 
 
