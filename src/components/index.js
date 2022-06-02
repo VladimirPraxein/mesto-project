@@ -1,6 +1,6 @@
 import './../styles/index.css';
 import { Card  } from './card.js';
-import FormValidator, { settings } from './validate.js';
+import FormValidator, { settings } from './FormValidator.js';
 import { api } from './api.js';
 import PopupWithImage from '../components/PopupWithImage.js';
 import PopupWithForm from '../components/PopupWithForm.js';
