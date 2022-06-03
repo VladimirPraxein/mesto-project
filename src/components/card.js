@@ -1,5 +1,5 @@
 import { api } from './api.js';
-import {userId} from './UserInfo.js';
+import {userId} from './index.js';
 export class Card {
   constructor({ link, name, likes, owner, _id }, {selector, handleCardClick}) {
     this._link = link;
@@ -15,9 +15,9 @@ export class Card {
     return contentCard;
   }
   _deleteCard() {
-    this.buttonDelete.addEventListener('click', function (evt) {
+    this.buttonDelete.addEventListener('click', (evt) => {
       api.deleteCard(this._cardId)
-        .then((res) => {evt.target.closest('.grid-cards__item').remove()})
+        .then(() => {evt.target.closest('.grid-cards__item').remove()})
         .catch(api.showError)
     });
   }
@@ -25,19 +25,19 @@ export class Card {
     numberLikes.textContent = likes.length;
   }
   _likeCard() {
-    this.buttonLike.addEventListener('click', function (evt) {
+    this.buttonLike.addEventListener('click', (evt) => {
       if(!evt.target.classList.contains('grid-cards__like-button_active')) {
         api.addLike(this._cardId, this._likes, this.numberLikes)
           .then(res => {
             evt.target.classList.add('grid-cards__like-button_active');
-            this._countLikes(numberLikes, res.likes)
+            this._countLikes(this.numberLikes, res.likes)
           })
           .catch(api.showError)
       } else {
         api.deleteLike(this._cardId, this.numberLikes)
           .then(res => {
             evt.target.classList.remove('grid-cards__like-button_active');
-            this._countLikes(numberLikes, res.likes)
+            this._countLikes(this.numberLikes, res.likes)
           })
           .catch(api.showError)
       }

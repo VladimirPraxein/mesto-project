@@ -1,5 +1,5 @@
 import './../styles/index.css';
-import { Card  } from './card.js';
+import { Card  } from './Card.js';
 import FormValidator, { settings } from './FormValidator.js';
 import { api } from './api.js';
 import PopupWithImage from '../components/PopupWithImage.js';
@@ -11,11 +11,10 @@ const popupProfile = document.querySelector('.popup_type_profile');
 const profile = document.querySelector('.profile');
 const profileName = document.querySelector('.profile__name');
 const profileWork = document.querySelector('.profile__work');
-const profileAvatar = document.querySelector('.profile__avatar');
+const profileImage = document.querySelector('.profile__avatar')
 const popupProfileName = document.querySelector('.popup__form-name');
 const popupProfileWork = document.querySelector('.popup__form-work');
 const buttonPopupProfile = popupProfile.querySelector('.popup__button-save');
-const listCards = document.querySelector('.grid-cards__list');
 const validator = new FormValidator(settings)
 
 //Показать ошибку
@@ -52,28 +51,28 @@ export const popupImageText = document.querySelector('.popup_type_image__text');
 export const popupImage = new PopupWithImage('.popup_type_image');
 popupImage.setEventListeners();
 
-//Загрузка информации о пользователе
+export let userId;
 const userInfo = new UserInfo(profile);
-userInfo.getUserInfo();
+const sectionCard = new Section({ renderer: (itemCard) => createCard(itemCard) }, '.grid-cards__list');
 
-//Загрузка карточек
-api.getCards()
-  .then((cards) => {
-    const section = new Section({
-      items:cards,
-      renderer:(itemCard) => {
-        const card = new Card(itemCard,
-          {selector:'.grid-cards__template', handleCardClick:(imageCard) => {
-          imageCard.addEventListener('click', () => {
-            popupImage.openPopup(imageCard)
-          })
-        }})
-        const cardElement = card.generate();
-        section.addItem(cardElement);
-      }
-    }, '.grid-cards__list')
-    section.renderItems();
-  });
+function createCard(itemCard) {
+  const card = new Card(itemCard,
+    {selector:'.grid-cards__template', handleCardClick:(imageCard) => {
+    imageCard.addEventListener('click', () => {
+      popupImage.openPopup(imageCard)
+    })
+  }})
+  const cardElement = card.generate();
+  sectionCard.addItem(cardElement);
+}
+//Загрузка карточек и профиля
+Promise.all([api.getUserInfo(), api.getCards()])
+  .then(([userData, cards]) => {
+    userId = userData._id;
+    userInfo.setUserInfo(userData);
+    sectionCard.renderItems(cards);
+  })
+  .catch(showError);
 
 //Открытие попапа профиля
 const popupPlace = document.querySelector('.popup_type_place');
@@ -91,7 +90,7 @@ function submitAvatar(input) {
   renderLoading(true, buttonPopupAvatar);
   api.updateAvatar(input.url)
     .then(res => {
-      processUserInfo(res);
+      profileImage.src = res.avatar;
       avatarPopup.closePopup();
     })
     .catch(showError)
@@ -109,24 +108,12 @@ document.querySelector('.profile__avatar-container').addEventListener('click', (
 
 //попап места
 const placePopup = new PopupWithForm('.popup_type_place',
-function submitPlace(input) {
+(input) => {
   renderLoading(true, buttonPopupPlace);
   api.addCard(input.place, input.url)
-    .then(cards => {
-      const section = new Section({
-        items:cards,
-        renderer:(itemCard) => {
-          const card = new Card(itemCard,
-            {selector:'.grid-cards__template', handleCardClick:(imageCard) => {
-            imageCard.addEventListener('click', () => {
-              popupImage.openPopup(imageCard)
-            })
-          }})
-          const cardElement = card.generate();
-          section.addItem(cardElement);
-        }
-      }, '.grid-cards__list')
-      section.renderItems();
+    .then((card) => {
+      createCard(card);
+      placePopup.closePopup();
     })
     .catch(showError)
     .finally(() => {renderLoading(false, buttonPopupPlace)})
