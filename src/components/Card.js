@@ -1,4 +1,4 @@
-import { api } from './api.js';
+import { api } from './Api.js';
 import {userId} from './index.js';
 export class Card {
   constructor({ link, name, likes, owner, _id }, {selector, handleCardClick}) {
