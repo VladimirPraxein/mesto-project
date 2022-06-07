@@ -9,6 +9,6 @@ export default class PopupWithImage extends Popup {
     super.openPopup();
     popupImagePicture.src = data.src;
     popupImagePicture.alt = data.alt;
-    popupImageText.textContent = data.textContent;
+    popupImageText.textContent = data.alt;
   }
 }
