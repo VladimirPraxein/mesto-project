@@ -51,7 +51,7 @@ export const popupImageText = document.querySelector('.popup_type_image__text');
 export const popupImage = new PopupWithImage('.popup_type_image');
 popupImage.setEventListeners();
 
-export let userId;
+let userId;
 const userInfo = new UserInfo(profile);
 const sectionCard = new Section({ renderer: (itemCard) => createCard(itemCard) }, '.grid-cards__list');
 
@@ -61,7 +61,7 @@ function createCard(itemCard) {
     imageCard.addEventListener('click', () => {
       popupImage.openPopup(imageCard)
     })
-  }})
+  }}, api, userId)
   const cardElement = card.generate();
   sectionCard.addItem(cardElement);
 }
