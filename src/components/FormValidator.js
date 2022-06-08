@@ -16,12 +16,12 @@ export default class {
 
   //Добавление слушателей полям формы
   _setEventListeners(formElement) {
-    const inputList = Array.from(formElement.querySelectorAll(this._settings.inputClass));
-    const buttonElement = formElement.querySelector(this._settings.buttonClass);
-    this._toggleButtonState(inputList, buttonElement);
-    inputList.forEach((inputElement) => {
+    this._inputList = Array.from(this._formElement.querySelectorAll(this._settings.inputClass));
+    this._buttonElement = this._formElement.querySelector(this._settings.buttonClass);
+    this._toggleButtonState(this._inputList, this._buttonElement);
+    this._inputList.forEach((inputElement) => {
       inputElement.addEventListener('input', () => {
-        this._toggleButtonState(inputList, buttonElement);
+        this._toggleButtonState(this._inputList, this._buttonElement);
         this._checkInputValidity(formElement, inputElement);
       });
     });
@@ -46,18 +46,14 @@ export default class {
   }
 
   //Создание изменения кнопки
-  setButtonState(formElement) {
-    const inputList = Array.from(formElement.querySelectorAll(this._settings.inputClass));
-    const buttonElement = formElement.querySelector(this._settings.buttonClass);
-    this._toggleButtonState(inputList, buttonElement);
+  setButtonState() {
+    this._toggleButtonState(this._inputList, this._buttonElement);
   }
 
   //Скрыть текст всех ошибок
-  hideErrors(popup) {
-    const formElement = popup.querySelector(this._settings.formClass);
-    const inputList = Array.from(formElement.querySelectorAll(this._settings.inputClass));
-    inputList.forEach((inputElement) => {
-      this._hideInputError(formElement, inputElement)
+  hideErrors() {
+    this._inputList.forEach((inputElement) => {
+      this._hideInputError(this._formElement, inputElement)
     });
   }
 

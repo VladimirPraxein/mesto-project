@@ -22,13 +22,16 @@ export function showError(err) {
   console.log(err);
 }
 
-const formList = document.querySelectorAll('.popup__form')
-
 //Валидация
-formList.forEach(form => {
-  const validator = new FormValidator(settings, form)
-  validator.enableValidation()
-})
+const avatarEditForm = document.querySelector('.form-avatar')
+const cardAddForm = document.querySelector('.card-add-form')
+const profileForm = document.querySelector('.profile-form')
+const avatarValidator = new FormValidator(settings, avatarEditForm)
+const cardAddValidator = new FormValidator(settings, cardAddForm)
+const profileValidator = new FormValidator(settings, profileForm)
+avatarValidator.enableValidation()
+cardAddValidator.enableValidation()
+profileValidator.enableValidation()
 
 //Уведомить пользователя о процессе загрузки
 function renderLoading(isLoading, button) {
@@ -102,8 +105,8 @@ avatarPopup.setEventListeners();
 document.querySelector('.profile__avatar-container').addEventListener('click', () => {
   avatarPopup.openPopup();
   popupAvatarForm.reset();
-  validator.hideErrors(popupAvatar);
-  validator.setButtonState(popupAvatar);
+  avatarValidator.hideErrors();
+  avatarValidator.setButtonState();
 });
 
 //попап места
@@ -124,8 +127,8 @@ placePopup.setEventListeners();
 addButton.addEventListener('click', () => {
   placePopup.openPopup();
   popupPlaceForm.reset();
-  validator.hideErrors(popupPlace);
-  validator.setButtonState(popupPlace);
+  cardAddValidator.hideErrors();
+  cardAddValidator.setButtonState();
 });
 
 //попап профиля
@@ -147,8 +150,8 @@ document.querySelector('.profile__edit-button').addEventListener('click', () => 
   profilePopup.openPopup();
   popupProfileName.value = profileName.textContent;
   popupProfileWork.value = profileWork.textContent;
-  validator.hideErrors(popupProfile);
-  validator.setButtonState(popupProfile);
+  profileValidator.hideErrors(popupProfile);
+  profileValidator.setButtonState(popupProfile);
 });
 
 
