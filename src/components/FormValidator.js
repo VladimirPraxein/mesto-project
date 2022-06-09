@@ -15,14 +15,14 @@ export default class {
   }
 
   //Добавление слушателей полям формы
-  _setEventListeners(formElement) {
+  _setEventListeners() {
     this._inputList = Array.from(this._formElement.querySelectorAll(this._settings.inputClass));
     this._buttonElement = this._formElement.querySelector(this._settings.buttonClass);
     this._toggleButtonState(this._inputList, this._buttonElement);
     this._inputList.forEach((inputElement) => {
       inputElement.addEventListener('input', () => {
         this._toggleButtonState(this._inputList, this._buttonElement);
-        this._checkInputValidity(formElement, inputElement);
+        this._checkInputValidity(this._formElement, inputElement);
       });
     });
   }
@@ -61,11 +61,7 @@ export default class {
     this._formElement.addEventListener('submit', (evt) => {
       evt.preventDefault();
     });
-
-    const fieldsetList = Array.from(this._formElement.querySelectorAll(this._settings.fieldsetClass));
-    fieldsetList.forEach((fieldSet) => {
-      this._setEventListeners(fieldSet, settings);
-    });
+    this._setEventListeners();
   };
 
   //Проверка поля на валидность
