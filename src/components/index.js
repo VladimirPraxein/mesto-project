@@ -89,7 +89,6 @@ avatarPopup.setEventListeners();
 
 document.querySelector('.profile__avatar-container').addEventListener('click', () => {
   avatarPopup.openPopup();
-  popupAvatarForm.reset();
   avatarValidator.hideErrors();
   avatarValidator.setButtonState();
 });
@@ -111,7 +110,6 @@ placePopup.setEventListeners();
 
 addButton.addEventListener('click', () => {
   placePopup.openPopup();
-  popupPlaceForm.reset();
   cardAddValidator.hideErrors();
   cardAddValidator.setButtonState();
 });
