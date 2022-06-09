@@ -14,8 +14,6 @@ const profileWork = document.querySelector('.profile__work');
 const profileImage = document.querySelector('.profile__avatar')
 const popupProfileName = document.querySelector('.popup__form-name');
 const popupProfileWork = document.querySelector('.popup__form-work');
-const buttonPopupProfile = popupProfile.querySelector('.popup__button-save');
-const validator = new FormValidator(settings)
 
 //Показать ошибку
 export function showError(err) {
@@ -63,14 +61,7 @@ Promise.all([api.getUserInfo(), api.getCards()])
   .catch(showError);
 
 //Открытие попапа профиля
-const popupPlace = document.querySelector('.popup_type_place');
-const popupPlaceForm = popupPlace.querySelector('.popup__form');
 const addButton = document.querySelector('.profile__add-button');
-const buttonPopupPlace = popupPlace.querySelector('.popup__button-save');
-
-const popupAvatar = document.querySelector('.popup_type_avatar');
-const popupAvatarForm = popupAvatar.querySelector('.popup__form');
-const buttonPopupAvatar = popupAvatar.querySelector('.popup__button-save');
 
 //попап аватара
 const avatarPopup = new PopupWithForm('.popup_type_avatar',
@@ -131,8 +122,7 @@ profilePopup.setEventListeners();
 
 document.querySelector('.profile__edit-button').addEventListener('click', () => {
   profilePopup.openPopup();
-  popupProfileName.value = profileName.textContent;
-  popupProfileWork.value = profileWork.textContent;
+  profilePopup.setInputValues(user.getUserInfo())
   profileValidator.hideErrors(popupProfile);
   profileValidator.setButtonState(popupProfile);
 });

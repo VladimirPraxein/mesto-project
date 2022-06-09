@@ -8,7 +8,7 @@ export default class UserInfo {
   getUserInfo() {
     return {
       name: this._profileName.textContent,
-      job: this._profileWork.textContent,
+      work: this._profileWork.textContent,
       avatar: this._profileAvatar.src
     }
   }
