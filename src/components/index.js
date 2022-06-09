@@ -4,7 +4,7 @@ import FormValidator, { settings } from './FormValidator.js';
 import { api } from './Api.js';
 import PopupWithImage from '../components/PopupWithImage.js';
 import PopupWithForm from '../components/PopupWithForm.js';
-import { UserInfo } from './UserInfo';
+import UserInfo from '../components/UserInfo';
 import { Section } from './Section';
 
 const popupProfile = document.querySelector('.popup_type_profile');
@@ -33,29 +33,15 @@ avatarValidator.enableValidation()
 cardAddValidator.enableValidation()
 profileValidator.enableValidation()
 
-//Уведомить пользователя о процессе загрузки
-function renderLoading(isLoading, button) {
-  if(isLoading) {
-    button.textContent = 'Сохранение...'
-    button.disabled = true;
-  } else {
-      if(button.classList.contains('button-create')) {
-        button.textContent = 'Создать';
-      } else {
-        button.textContent = 'Сохранить';
-      }
-      button.disabled = false;
-  }
-}
-
-export const popupImagePicture = document.querySelector('.popup_type_image__image');
-export const popupImageText = document.querySelector('.popup_type_image__text');
 //попап с картинкой
 export const popupImage = new PopupWithImage('.popup_type_image');
 popupImage.setEventListeners();
 
-let userId;
-const userInfo = new UserInfo(profile);
+const user = new UserInfo({
+  profileName: '.profile__name',
+  profileWork: '.profile__work',
+  profileAvatar: '.profile__avatar',
+});
 const sectionCard = new Section({ renderer: (itemCard) => createCard(itemCard) }, '.grid-cards__list');
 
 function createCard(itemCard) {
@@ -64,15 +50,14 @@ function createCard(itemCard) {
     imageCard.addEventListener('click', () => {
       popupImage.openPopup(imageCard)
     })
-  }}, api, userId)
+  }}, api, user.userId)
   const cardElement = card.generate();
   sectionCard.addItem(cardElement);
 }
 //Загрузка карточек и профиля
 Promise.all([api.getUserInfo(), api.getCards()])
   .then(([userData, cards]) => {
-    userId = userData._id;
-    userInfo.setUserInfo(userData);
+    user.setUserInfo(userData);
     sectionCard.renderItems(cards);
   })
   .catch(showError);
@@ -90,14 +75,14 @@ const buttonPopupAvatar = popupAvatar.querySelector('.popup__button-save');
 //попап аватара
 const avatarPopup = new PopupWithForm('.popup_type_avatar',
 function submitAvatar(input) {
-  renderLoading(true, buttonPopupAvatar);
+  avatarPopup.renderLoading(true);
   api.updateAvatar(input.url)
     .then(res => {
       profileImage.src = res.avatar;
       avatarPopup.closePopup();
     })
     .catch(showError)
-    .finally(() => {renderLoading(false, buttonPopupAvatar)})
+    .finally(() => {avatarPopup.renderLoading(false)})
 });
 
 avatarPopup.setEventListeners();
@@ -112,14 +97,14 @@ document.querySelector('.profile__avatar-container').addEventListener('click', (
 //попап места
 const placePopup = new PopupWithForm('.popup_type_place',
 (input) => {
-  renderLoading(true, buttonPopupPlace);
+  placePopup.renderLoading(true);
   api.addCard(input.place, input.url)
     .then((card) => {
       createCard(card);
       placePopup.closePopup();
     })
     .catch(showError)
-    .finally(() => {renderLoading(false, buttonPopupPlace)})
+    .finally(() => {placePopup.renderLoading(false)})
 });
 
 placePopup.setEventListeners();
@@ -134,14 +119,14 @@ addButton.addEventListener('click', () => {
 //попап профиля
 const profilePopup = new PopupWithForm('.popup_type_profile',
   function submitProfile(input) {
-    renderLoading(true, buttonPopupProfile);
+    profilePopup.renderLoading(true);
     api.saveUserInfo(input.name, input.work)
       .then(res => {
-        userInfo.setUserInfo(res);
+        user.setUserInfo(res);
         profilePopup.closePopup();
       })
       .catch(showError)
-      .finally(() => {renderLoading(false, buttonPopupProfile)})
+      .finally(() => {profilePopup.renderLoading(false)})
   });
 
 profilePopup.setEventListeners();

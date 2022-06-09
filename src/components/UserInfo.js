@@ -1,21 +1,22 @@
-export class UserInfo {
-  constructor(data) {
-    this._name = data.querySelector('.profile__name');
-    this._about = data.querySelector('.profile__work');
-    this._avatar = data.querySelector('.profile__avatar');
+export default class UserInfo {
+  constructor({ profileName, profileWork, profileAvatar }) {
+    this._profileName = document.querySelector(profileName);
+    this._profileWork = document.querySelector(profileWork);
+    this._profileAvatar = document.querySelector(profileAvatar);
   }
 
   getUserInfo() {
     return {
-      name: this._name.textContent,
-      about: this._about.textContent,
-      avatar: this._avatar.src,
+      name: this._profileName.textContent,
+      job: this._profileWork.textContent,
+      avatar: this._profileAvatar.src
     }
   }
 
-  setUserInfo(res) {
-    this._name.textContent = res.name;
-    this._about.textContent = res.about;
-    this._avatar.src = res.avatar;
+  setUserInfo({ name, about, avatar, _id }) {
+    this._profileName.textContent = name;
+    this._profileWork.textContent = about;
+    this._profileAvatar.src = avatar;
+    this.userId = _id;
   }
 }

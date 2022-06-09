@@ -19,11 +19,11 @@ export default class Popup {
   }
   setEventListeners() {
     this._popup.addEventListener('click', (evt) => {
-      this._closePopupOverlay(evt);
+      this._handlePopupClose(evt);
     });
   }
 
-  _closePopupOverlay(evt) {
+  _handlePopupClose(evt) {
     if (!evt.target.closest('.popup__container')) {
       this.closePopup();
     }
