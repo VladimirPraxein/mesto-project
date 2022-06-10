@@ -69,7 +69,7 @@ function submitAvatar(input) {
   avatarPopup.renderLoading(true);
   api.updateAvatar(input.url)
     .then(res => {
-      profileImage.src = res.avatar;
+      user.setUserInfo(res);
       avatarPopup.closePopup();
     })
     .catch(showError)
@@ -123,8 +123,8 @@ profilePopup.setEventListeners();
 document.querySelector('.profile__edit-button').addEventListener('click', () => {
   profilePopup.openPopup();
   profilePopup.setInputValues(user.getUserInfo())
-  profileValidator.hideErrors(popupProfile);
-  profileValidator.setButtonState(popupProfile);
+  profileValidator.hideErrors();
+  profileValidator.setButtonState();
 });
 
 
